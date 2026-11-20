@@ -8,7 +8,7 @@
 # scrollytelling can play it. The celebration video is stored sideways, so it is rotated here.
 # Optional: STEPS="clips films photos" to only run some steps, OUT=/other/dir to write elsewhere.
 set -euo pipefail
-
+ 
 PROFILE=${1:?usage: build-media.sh hq|lite <skyline.mp4> <celebration.mp4>}
 SKY=${2:?skyline video missing}
 CEL=${3:?celebration video missing}
