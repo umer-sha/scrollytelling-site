@@ -1,0 +1,177 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  --background: #fbf8f3;
+  --foreground: #231f1b;
+  --card: #ffffff;
+  --card-foreground: #231f1b;
+  --primary: #231f1b;
+  --primary-foreground: #fbf8f3;
+  --secondary: #f1e8df;
+  --secondary-foreground: #231f1b;
+  --muted: #f1e8df;
+  --muted-foreground: #7a6f66;
+  --accent: #c9a66b;
+  --accent-foreground: #231f1b;
+  --border: #e6dccf;
+  --input: #e6dccf;
+  --ring: #c9a66b;
+  --radius: 0.75rem;
+  --champagne: #a9803f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-champagne: var(--champagne);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-display), ui-serif, Georgia, serif;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: hidden;
+    letter-spacing: 0.005em;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 {
+    font-weight: 500;
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+  /* small labels: bolder, as in the reference's uppercase labelling */
+  .uppercase {
+    font-weight: 600;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--foreground);
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Word-mask reveal */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.word-mask > span {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Testimonial marquee */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 60s linear infinite;
+  width: max-content;
+}
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* Soft paper grain over the whole page */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Page transition (opacity only, so pinned/sticky sections are never affected) */
+@keyframes page-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.page-enter {
+  animation: page-in 0.7s ease-out backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-enter { animation: none; }
+}
+
+/* sound pill equalizer bars */
+.eq i {
+  display: block;
+  width: 2px;
+  height: 100%;
+  background: currentColor;
+  transform-origin: bottom;
+  transform: scaleY(0.25);
+}
+.eq[data-on="true"] i {
+  animation: eq 0.9s ease-in-out infinite;
+}
+.eq[data-on="true"] i:nth-child(2) { animation-delay: -0.35s; }
+.eq[data-on="true"] i:nth-child(3) { animation-delay: -0.6s; }
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eq[data-on="true"] i { animation: none; transform: scaleY(0.7); }
+}
+
+/* content protection: no long-press save, no dragging, no selecting media; nothing printed */
+img, video, picture {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+@media print {
+  html, body { display: none !important; }
+}
